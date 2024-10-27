@@ -1,0 +1,4 @@
+Array sesudah diurutkan: [10392, 12985, 32495, 32953, 34586, 34982, 45096, 59864, 93235, 95894]
+Total exec time Bubble : 12000 Nanosecond
+Waktu yang dibutuhkan Quick sort: 7200 Nanosecond
+Waktu yang dibutuhkan Merge sort: 218200 Nanosecond

@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.io.*;
 
 @SuppressWarnings("unused")
 class quicksort {
@@ -86,7 +87,7 @@ class MergeSort {
     }
 }
 
-public class ThreeSorting {
+public class SortingOutput {
 
     public static void bublesort(int[] arrays) {
         int n = arrays.length;
@@ -102,31 +103,36 @@ public class ThreeSorting {
         }
     }
 
-    public static void timeBubble(int[] array) {
+    public static void timeBubble(int[] array, PrintWriter printwriter) {
         long startTime = System.nanoTime();
         bublesort(array);
         long stopTime = System.nanoTime();
         System.out.println("Waktu yang dibutuhkan Bubble sort: " + (stopTime - startTime) + " Nanosecond");
+        printwriter.println("Waktu yang dibutuhkan Bubble sort: " + (stopTime - startTime) + " Nanosecond");
     }
     
-    public static void timeQuick(int[] array) {
+    public static void timeQuick(int[] array, PrintWriter printwriter) {
         long startTime = System.nanoTime();
         quicksort QS = new quicksort();
         QS.quickSort(array, 0, array.length-1);
         long stopTime = System.nanoTime();
+        printwriter.println("Waktu yang dibutuhkan Quick sort: " + (stopTime - startTime) + " Nanosecond");
         System.out.println("Waktu yang dibutuhkan Quick sort: " + (stopTime - startTime) + " Nanosecond");
     }
 
 
-    public static void timeMerge(int[] array) {
+    public static void timeMerge(int[] array, PrintWriter printwriter) {
         long startTime = System.nanoTime();
         MergeSort.mergeSort(array);
         long stopTime = System.nanoTime();
+        printwriter.println("Waktu yang dibutuhkan Merge sort: " + (stopTime - startTime) + " Nanosecond");
         System.out.println("Waktu yang dibutuhkan Merge sort: " + (stopTime - startTime) + " Nanosecond");
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        FileWriter filewriter = new FileWriter("sorting_output.txt");
+        PrintWriter printwriter = new PrintWriter(filewriter);
         quicksort QuickSort = new quicksort();
         Scanner sc = new Scanner(System.in);
         System.out.print("Masukkan jumlah element: ");
@@ -164,8 +170,10 @@ public class ThreeSorting {
                 long stopTime1 = System.nanoTime();
                 System.out.println("Array sesudah diurutkan: " + Arrays.toString(array));
                 System.out.println("Total exec time Bubble : " + (stopTime1 - startTime1) + " Nanosecond");
-                timeQuick(array);
-                timeMerge(array);
+                printwriter.println("Array sesudah diurutkan: " + Arrays.toString(array));
+                printwriter.println("Total exec time Bubble : " + (stopTime1 - startTime1) + " Nanosecond");
+                timeQuick(array, printwriter);
+                timeMerge(array, printwriter);
                 break;
             case 2:
                 long startTime2 = System.nanoTime();
@@ -173,8 +181,10 @@ public class ThreeSorting {
                 long stopTime2 = System.nanoTime();
                 System.out.println("Array sesudah diurutkan: " + Arrays.toString(array));
                 System.out.println("Total exec time Quick : " + (stopTime2 - startTime2) + " Nanosecond");
-                timeBubble(array);
-                timeMerge(array);
+                printwriter.println("Array sesudah diurutkan: " + Arrays.toString(array));
+                printwriter.println("Total exec time Quick : " + (stopTime2 - startTime2) + " Nanosecond");
+                timeBubble(array, printwriter);
+                timeMerge(array, printwriter);
                 break;
             case 3:
                 long startTime3 = System.nanoTime();
@@ -182,12 +192,15 @@ public class ThreeSorting {
                 long stopTime3 = System.nanoTime();
                 System.out.println("Array sesudah diurutkan: " + Arrays.toString(array));
                 System.out.println("Total exec time Merge : " + (stopTime3 - startTime3 + " Nanosecond"));
-                timeBubble(array);
-                timeQuick(array);
+                printwriter.println("Array sesudah diurutkan: " + Arrays.toString(array));
+                printwriter.println("Total exec time Merge : " + (stopTime3 - startTime3 + " Nanosecond"));
+                timeBubble(array, printwriter);
+                timeQuick(array, printwriter);
                 break;
             default:
                 System.out.println("Invalid input");
                 break;
         }
+        printwriter.close();
     }
 }
