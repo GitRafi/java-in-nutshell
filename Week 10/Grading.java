@@ -1,6 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.*;
 
+
+@SuppressWarnings("unused")
 public class Grading extends JFrame {
     JLabel nim = new JLabel("NIM");
     JLabel nama = new JLabel("Nama");
@@ -21,6 +25,7 @@ public class Grading extends JFrame {
     JButton keluar = new JButton("Keluar");
     String[] lorem = {"Kalkulus", "Pemrograman Python", "Ga tau dah"};
     JComboBox<String> cb_matkul = new JComboBox<>(lorem);
+    Font font1 = new Font("Sansserif", Font.BOLD, 15);
 
     Grading() {
         setTitle("Lembar Penilaian");
@@ -51,12 +56,26 @@ public class Grading extends JFrame {
         getContentPane().add(hapus);
         getContentPane().add(keluar);
 
+        //Set Font for inputs
+        input_nim.setFont(font1);
+        input_nama.setFont(font1);
+        kelas_a.setFont(font1);
+        kelas_b.setFont(font1);
+        kelas_c.setFont(font1);
+
         //Setup the position
         nim.setBounds(10, 15, 30, 20);
         input_nim.setBounds(130, 15, 125, 23);
         search.setBounds(280, 15, 195, 23);
         nama.setBounds(10, 50, 60, 20);
         input_nama.setBounds(130, 50, 345, 23);
+        kelas.setBounds(10, 85, 60, 20);
+        a.setBounds(130, 85, 20, 20);
+        kelas_a.setBounds(150, 84, 20, 20);
+        b.setBounds(175, 85, 20, 20);
+        kelas_b.setBounds(195, 84, 20, 20);
+        c.setBounds(215, 85, 20, 20);
+        kelas_c.setBounds(235, 84, 20, 20);
     }
 
     public static void main(String[] args) {
