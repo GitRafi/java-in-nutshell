@@ -2,14 +2,18 @@ import java.sql.*;
 
 public class JDBC {
     public static void main(String[] args) throws Exception {
-        String db_url = "jdbc:mysql://localhost:3306/rafi_24051130034";
+        String db_url = "jdbc:mysql://localhost:3306/yourdatabasename";
         String db_user = "root";
         String db_pw = "";
 
         Connection con = DriverManager.getConnection(db_url, db_user, db_pw);
         Statement st = con.createStatement();
 
-        ResultSet test = st.executeQuery("SELECT * FROM siswa");
-        System.out.println(test);
+        ResultSet test = st.executeQuery("SELECT * FROM sometable");
+        while (test.next()) {
+            System.out.println(test.getString(1));
+            System.out.println(test.getString(2));
+            System.out.println(test.getString(3));
+        }
     }
 }
