@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -84,15 +85,71 @@ public class Grading extends JFrame {
     }
 
     void event() {
+       
+        i.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (i.isSelected()) {
+                    j.setSelected(false);
+                    k.setSelected(false);
+                }
+             }
+        });
         
+        j.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (j.isSelected()) {
+                    i.setSelected(false);
+                    k.setSelected(false);
+                }
+             }
+        });
+
+        k.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (k.isSelected()) {
+                    i.setSelected(false);
+                    j.setSelected(false);
+                }
+             }
+        });
+
+        edit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String nim = String.valueOf(input_nim.getText());
+                    String nama = String.valueOf(input_nama.getText());
+                    String kelas = null;
+                    if (i.isSelected()) {
+                        kelas = "I";
+                    } else if (j.isSelected()) {
+                        kelas = "J";
+                    } else if (k.isSelected()) {
+                        kelas = "K";
+                    }
+                    final String updateQuery = "UPDATE sometable SET fullname = ?, class = ? WHERE NIM = ?;";
+                    Connection con = SQLCon.getConnetion();
+                    PreparedStatement ps = con.prepareStatement(updateQuery);
+                    ps.setString(1, nama);
+                    ps.setString(2, kelas);
+                    ps.setString(3, nim);
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Berhasil mengubah data");
+                   
+                } catch (SQLException err) {
+                    err.printStackTrace(); 
+                    JOptionPane.showMessageDialog(null, "Gagal mengubah data!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String params = String.valueOf(input_nim.getText());
-                    final String searchQuery = "SELECT * FROM siswa WHERE NIM = ?";
+                    String nim = String.valueOf(input_nim.getText());
+                    final String searchQuery = "SELECT * FROM sometable WHERE NIM = ?;";
                     Connection con = SQLCon.getConnetion();
                     PreparedStatement ps = con.prepareStatement(searchQuery);
-                    ps.setString(1, params);
+                    ps.setString(1, nim);
                     ResultSet rs = ps.executeQuery();
 
                     while (rs.next()) {
@@ -117,9 +174,64 @@ public class Grading extends JFrame {
                     }
                 } catch (SQLException err) {
                     SQLCon.printSQLException(err);
+                    JOptionPane.showMessageDialog(null, "Data tidak ditemukan!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
+        simpan.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e ) {
+                try {
+                    String nim = String.valueOf(input_nim.getText());
+                    String nama = String.valueOf(input_nama.getText()); 
+                    String kelas = null;
+                    
+                    if (i.isSelected()) {
+                        kelas = "I";
+                    } else if (j.isSelected()) {
+                        kelas = "J";
+                    } else if (k.isSelected()) {
+                        kelas = "K";
+                    }
+
+                    final String createQuery = "INSERT INTO sometable (NIM, fullname, class) VALUES (?, ?, ?);";
+                    Connection con = SQLCon.getConnetion();
+                    PreparedStatement ps = con.prepareStatement(createQuery);
+                    ps.setString(1, nim);
+                    ps.setString(2, nama);
+                    ps.setString(3, kelas);
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Data baru ditambahkan");
+                } catch(SQLException err) {
+                    err.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Data gagal ditambahkan!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        hapus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String nim = String.valueOf(input_nim.getText());
+                    final String deleteQuery = "DELETE FROM sometable WHERE NIM = ?;";
+                    Connection con = SQLCon.getConnetion();
+                    PreparedStatement ps = con.prepareStatement(deleteQuery);
+                    ps.setString(1, nim);
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                } catch (SQLException err) {
+                    err.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Data gagal dihapus!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }   
+            }
+        });
+
+        keluar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
     }
 
     public static void main(String[] args) {
