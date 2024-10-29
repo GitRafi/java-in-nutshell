@@ -3,21 +3,20 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
-
-@SuppressWarnings("unused")
 public class Grading extends JFrame {
+
     JLabel nim = new JLabel("NIM");
     JLabel nama = new JLabel("Nama");
     JLabel kelas = new JLabel("Kelas");
     JLabel matkul = new JLabel("Mata Kuliah");
-    JLabel kelas_a = new JLabel("A");
-    JLabel kelas_b = new JLabel("B");
-    JLabel kelas_c = new JLabel("C");
+    JLabel kelas_i = new JLabel("I");
+    JLabel kelas_j = new JLabel("J");
+    JLabel kelas_k = new JLabel("K");
     JTextArea input_nim = new JTextArea();
     JTextArea input_nama = new JTextArea();
-    JRadioButton a = new JRadioButton();
-    JRadioButton b = new JRadioButton();
-    JRadioButton c = new JRadioButton();
+    JRadioButton i = new JRadioButton();
+    JRadioButton j = new JRadioButton();
+    JRadioButton k = new JRadioButton();
     JButton search = new JButton("Cari");
     JButton edit = new JButton("Edit");
     JButton simpan = new JButton("Simpan");
@@ -34,7 +33,7 @@ public class Grading extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
-
+        
     void object() {
         getContentPane().setLayout(null);
         getContentPane().add(nim);
@@ -43,12 +42,12 @@ public class Grading extends JFrame {
         getContentPane().add(matkul);
         getContentPane().add(input_nama);
         getContentPane().add(input_nim);
-        getContentPane().add(a);
-        getContentPane().add(b);
-        getContentPane().add(c);
-        getContentPane().add(kelas_a);
-        getContentPane().add(kelas_b);
-        getContentPane().add(kelas_c);
+        getContentPane().add(i);
+        getContentPane().add(j);
+        getContentPane().add(k);
+        getContentPane().add(kelas_i);
+        getContentPane().add(kelas_j);
+        getContentPane().add(kelas_k);
         getContentPane().add(cb_matkul);
         getContentPane().add(search);
         getContentPane().add(edit);
@@ -59,9 +58,9 @@ public class Grading extends JFrame {
         //Set Font for inputs
         input_nim.setFont(font1);
         input_nama.setFont(font1);
-        kelas_a.setFont(font1);
-        kelas_b.setFont(font1);
-        kelas_c.setFont(font1);
+        kelas_i.setFont(font1);
+        kelas_j.setFont(font1);
+        kelas_k.setFont(font1);
 
         //Setup the position
         nim.setBounds(10, 15, 30, 20);
@@ -70,17 +69,62 @@ public class Grading extends JFrame {
         nama.setBounds(10, 50, 60, 20);
         input_nama.setBounds(130, 50, 345, 23);
         kelas.setBounds(10, 85, 60, 20);
-        a.setBounds(130, 85, 20, 20);
-        kelas_a.setBounds(150, 84, 20, 20);
-        b.setBounds(175, 85, 20, 20);
-        kelas_b.setBounds(195, 84, 20, 20);
-        c.setBounds(215, 85, 20, 20);
-        kelas_c.setBounds(235, 84, 20, 20);
+        i.setBounds(130, 85, 20, 20);
+        kelas_i.setBounds(150, 84, 20, 20);
+        j.setBounds(175, 85, 20, 20);
+        kelas_j.setBounds(195, 84, 20, 20);
+        k.setBounds(215, 85, 20, 20);
+        kelas_k.setBounds(235, 84, 20, 20);
+        matkul.setBounds(10, 120, 90, 20);
+        cb_matkul.setBounds(130, 120, 200, 20);
+        edit.setBounds(10, 155, 100, 23);
+        simpan.setBounds(120, 155, 100, 23);
+        hapus.setBounds(230, 155, 100, 23);
+        keluar.setBounds(375, 155, 100, 23);
+    }
+
+    void event() {
+        
+        search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String params = String.valueOf(input_nim.getText());
+                    final String searchQuery = "SELECT * FROM siswa WHERE NIM = ?";
+                    Connection con = SQLCon.getConnetion();
+                    PreparedStatement ps = con.prepareStatement(searchQuery);
+                    ps.setString(1, params);
+                    ResultSet rs = ps.executeQuery();
+
+                    while (rs.next()) {
+                        String nama = rs.getString("fullname");
+                        String kelas = rs.getString("class");
+                        System.out.println(nama);
+                        System.out.println(kelas);
+                        input_nama.setText(nama);
+                        if (kelas.equals("I")) {
+                            i.setSelected(true);
+                            j.setSelected(false);
+                            k.setSelected(false);
+                        } else if (kelas.equals("J")) {
+                            j.setSelected(true);
+                            i.setSelected(false);
+                            k.setSelected(false);
+                        } else if (kelas.equals("K")) {
+                            k.setSelected(true);
+                            i.setSelected(false);
+                            j.setSelected(false);
+                        }
+                    }
+                } catch (SQLException err) {
+                    SQLCon.printSQLException(err);
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
-        Grading g = new Grading();
-        g.object();
+                Grading g = new Grading();
+                g.object();
+                g.event();
     }
-
 }
