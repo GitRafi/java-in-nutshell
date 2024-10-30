@@ -47,8 +47,8 @@ public class StudentRecord {
         return scienceGrade;
     }
 
-    public double getAverage() {
-        return ((mathGrade + englishGrade + scienceGrade) / 3);
+    public void getAverage() {
+        System.out.println("Rata-rata nilai: " + ((mathGrade + englishGrade + scienceGrade) / 3));
     }
 
     //Mutator or you may call it setter ;)
@@ -123,6 +123,7 @@ public class StudentRecord {
         alim.setAge(17);
         alim.printInfo();
         alim.printInfo(alim.getMath(), alim.getEnglish(), alim.getScince());
+        alim.getAverage();
 
         /*
          * Can i call the psswd method?
