@@ -1,51 +1,17 @@
-public class BukuAlamat{
-    private String name;
-    private String address;
-    private String telp_number;
-    private String email;
+import com.jakewharton.fliptables.FlipTable;
+// import com.jakewharton.fliptables.FlipTableConverters;
 
-    private static int numberInstance = 0;
+import java.util.Arrays;
 
-    public BukuAlamat() {
-        numberInstance++;
+@SuppressWarnings("unused")
+public class BukuAlamat {
+    public static void main(String[] args) {
+        String[] headers = {"No", "Nama", "Alamat", "Telepon", "Email"};
+        AddressBook person1 = new AddressBook("Ali", "Jordania", "+12 21423", "ali@sialim.com" );
+        AddressBook person2 = new AddressBook("Bina", "Russia", "+24 123452", "bina12@binana.com" );
+        // AddressBook.deleteData(2);
+        System.out.println(FlipTable.of(headers, AddressBook.data));
+        System.out.println(AddressBook.data.length);
+        
     }
-
-    public static int getInstanceCount() {
-        return numberInstance;
-    }
-
-    //Accessor (Menampilkan seluruh data)
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getTelp() {
-        return telp_number;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    //Modifier (Update data)
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setTelp(String telp_number) {
-        this.telp_number = telp_number;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 }

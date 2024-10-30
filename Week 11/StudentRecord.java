@@ -7,7 +7,7 @@ public class StudentRecord {
     private double scienceGrade;
     private String password;
 
-    //Constructo for counting instance object and set age to 15
+    //Constructor for counting instance object and set age to 15
     private static int studentCound;
 
     public StudentRecord() {
