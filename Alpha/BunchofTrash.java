@@ -1,4 +1,3 @@
-package Alpha;
 import java.util.Arrays;
 public class BunchofTrash {
 

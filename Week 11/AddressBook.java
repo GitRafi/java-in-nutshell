@@ -1,10 +1,12 @@
 import java.util.Arrays;
+import com.jakewharton.fliptables.FlipTable;
 
 public class AddressBook {
     private String name;
     private String address;
     private String telp_number;
     private String email;
+    private static String[] headers = {"Nomer", "Nama", "Alamat", "Telepon", "Email"};
     public static String[][] data = new String[10][5];
 
     //Buat ngitung instancenya
@@ -37,6 +39,21 @@ public class AddressBook {
         return numberInstance;
     }
 
+    //Method Read
+    public static void showData() {
+        System.out.println(FlipTable.of(headers, data));
+    }
+
+    //Method Update
+    public static void updateData(int baris_data, String name, String address, String telephone, String email) {
+        int row = (baris_data - 1);
+
+        data[row][1] = name;
+        data[row][2] = address;
+        data[row][3] = telephone;
+        data[row][4] = email;
+    }
+
     //Method Delete
     public static void deleteData(int baris_data) {
         int row = (baris_data - 1);
@@ -47,9 +64,13 @@ public class AddressBook {
         
         for (int i=0;i<data.length;i++) {
             data[i][0] = String.valueOf(i+1);
+
+            if (i==(data.length-1)) {
+                data[i][0] = String.valueOf(i);
+            }
         }
-        Arrays.copyOf(data, data.length-1);
-        // data[data.length - 1] = null;
+        
+        data = Arrays.copyOf(data, data.length-1);
     }
 
     //Ini method Accessor/getter
@@ -85,13 +106,4 @@ public class AddressBook {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    // public void setdata(String name) {
-    //     this.data[numberInstance] = name;
-    // }
-
-    // public void setAddress(String address) {
-    //     this.addresses[numberInstance] = address;
-    // }
-    
 }

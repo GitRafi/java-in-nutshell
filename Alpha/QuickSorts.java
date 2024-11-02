@@ -1,7 +1,6 @@
-package Alpha;
 import java.util.Arrays;
 
-public class QuickSort {
+public class QuickSorts {
     //Greater or equal to pivot, ignore it
     static void quicksort(int array[], int start, int end) {
         if (end <= start) return;

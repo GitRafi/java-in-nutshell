@@ -1,7 +1,4 @@
-package Alpha;
-
-
-public class MergeSort {
+public class MergeSorts {
 
     public static void mergeSort(int[] inputArray) {
         int length = inputArray.length;
