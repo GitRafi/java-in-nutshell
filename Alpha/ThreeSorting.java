@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 @SuppressWarnings("unused")
-class quicksort {
+class QuickSort {
 
     private int partition(int[] arrays, int start, int end) { //params are arrays, lower bound(start), upper bound (end)
         int pivot = arrays[end];
@@ -31,7 +31,7 @@ class quicksort {
     }
 }
 
-class MergeSort {
+class MergeSorts {
 
     public static void mergeSort(int[] inputArray) {
         int length = inputArray.length;
@@ -111,7 +111,7 @@ public class ThreeSorting {
     
     public static void timeQuick(int[] array) {
         long startTime = System.nanoTime();
-        quicksort QS = new quicksort();
+        QuickSort QS = new QuickSort();
         QS.quickSort(array, 0, array.length-1);
         long stopTime = System.nanoTime();
         System.out.println("Waktu yang dibutuhkan Quick sort: " + (stopTime - startTime) + " Nanosecond");
@@ -120,14 +120,14 @@ public class ThreeSorting {
 
     public static void timeMerge(int[] array) {
         long startTime = System.nanoTime();
-        MergeSort.mergeSort(array);
+        MergeSorts.mergeSort(array);
         long stopTime = System.nanoTime();
         System.out.println("Waktu yang dibutuhkan Merge sort: " + (stopTime - startTime) + " Nanosecond");
     }
 
 
     public static void main(String[] args) {
-        quicksort QuickSort = new quicksort();
+        QuickSort QuickSort = new QuickSort();
         Scanner sc = new Scanner(System.in);
         System.out.print("Masukkan jumlah element: ");
         int total = sc.nextInt();
@@ -178,7 +178,7 @@ public class ThreeSorting {
                 break;
             case 3:
                 long startTime3 = System.nanoTime();
-                MergeSort.mergeSort(array);
+                MergeSorts.mergeSort(array);
                 long stopTime3 = System.nanoTime();
                 System.out.println("Array sesudah diurutkan: " + Arrays.toString(array));
                 System.out.println("Total exec time Merge : " + (stopTime3 - startTime3 + " Nanosecond"));
