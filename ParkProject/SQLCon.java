@@ -3,8 +3,8 @@ import java.sql.*;
 
 public class SQLCon {
     private static final String DB_url = "jdbc:mysql://localhost/parkingdb";
-    private static final String DB_user = "root";
-    private static final String DB_pw = "";
+    private static final String DB_user = "sironcydb";
+    private static final String DB_pw = "minuman123#";
 
     public static Connection getConnetion() throws SQLException {
         return DriverManager.getConnection(DB_url, DB_user, DB_pw);
