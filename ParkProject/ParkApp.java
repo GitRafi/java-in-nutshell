@@ -1,7 +1,9 @@
 package ParkProject;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -103,9 +105,12 @@ public class ParkApp extends JFrame {
                 totalTarif += (hours - 1) * 1;
                }
 
-               data = new Object[]  {plat, tipeKendaraan, timeIn.toString(), "Rp." + totalTarif};
+               NumberFormat formatrp = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+               String formatTarif = formatrp.format(totalTarif);
+               data = new Object[]  {plat, tipeKendaraan, timeIn.toString(), "Rp." + formatTarif};
                model.addRow(data);
             }
+
         } catch (SQLException err) {
             SQLCon.printSQLException(err);
             JOptionPane.showMessageDialog(null, "Data gagal ditampilkan! Error: " + err.getMessage(), "Error",  JOptionPane.ERROR_MESSAGE);
@@ -138,11 +143,12 @@ public class ParkApp extends JFrame {
                 ps.setString(1, plat);
                 ps.setString(2, tipeKendaraan);
                 ps.executeUpdate();
+                model.setRowCount(0);
+                dataTable.revalidate();
                 
                 //Ambil data ulang
                 final String getQuery = "SELECT * FROM vehicle_parked ORDER BY CASE WHEN tipe_kendaraan = 'Motor' THEN 1 WHEN tipe_kendaraan = 'Mobil' THEN 2 ELSE 3 END;";
                 PreparedStatement update = con.prepareStatement(getQuery);
-                update.setString(1, plat);
                 ResultSet rs = update.executeQuery();
                 Object[] data;
             
