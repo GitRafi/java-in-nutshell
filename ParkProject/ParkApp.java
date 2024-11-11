@@ -105,7 +105,8 @@ public class ParkApp extends JFrame {
                 totalTarif += (hours - 1) * 1;
                }
 
-               NumberFormat formatrp = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+               @SuppressWarnings("deprecation")
+            NumberFormat formatrp = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
                String formatTarif = formatrp.format(totalTarif);
                data = new Object[]  {plat, tipeKendaraan, timeIn.toString(), "Rp." + formatTarif};
                model.addRow(data);

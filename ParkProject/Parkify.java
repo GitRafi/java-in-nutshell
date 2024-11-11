@@ -2,58 +2,76 @@ package ParkProject;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.event.*;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.util.Locale;
 import java.text.NumberFormat;
 
 public class Parkify extends JFrame {
-    JLabel title = new JLabel("Plaza Parking Management");
+    JLabel title = new JLabel("Parkify");
     JLabel datetime = new JLabel();
     JTextArea inputPlat = new JTextArea();
-    JButton searchButton = new JButton("Search");
+    JTextArea filter = new JTextArea();
     JButton deleteButton = new JButton("Out");
     JButton addButton = new JButton("In");
     String[] tipeKendaraan = {"Motor", "Mobil"};
     JComboBox<String> pilihanKendaraan = new JComboBox<>(tipeKendaraan);
     JTable dataTable = new JTable();
     DefaultTableModel model = new DefaultTableModel();
+    JLabel seachlabel = new JLabel("Search:");
 
-    // Font
-    Font font1 = new Font("SansSerif", Font.BOLD, 20);
     Font inputFont = new Font("SansSerif", Font.BOLD, 15);
-    Font date = new Font("SansSerif", Font.ITALIC, 15);
 
     Parkify() {
-        setTitle("Plaza Parking App");
+        setTitle("Parkify : Parking Management App");
         setLocationRelativeTo(null);
         setSize(660, 600);
+        setBackground(new Color(255, 255, 255));
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        timedateWidget();
+        this.getRootPane().setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(32, 136, 203)));
     }
 
     void object() {
         getContentPane().setLayout(null);
         getContentPane().add(title);
         getContentPane().add(inputPlat);
-        getContentPane().add(searchButton);
         getContentPane().add(deleteButton);
         getContentPane().add(addButton);
         getContentPane().add(datetime);
         getContentPane().add(pilihanKendaraan);
+        getContentPane().add(filter);
+        getContentPane().add(seachlabel);
         
-        title.setFont(font1);
-        title.setBounds(220, 30, 300, 25);
-        datetime.setBounds(478, 70, 200, 23);
-        inputPlat.setBounds(30, 122, 150, 23);
-        inputPlat.setFont(inputFont);
+        title.setFont(new Font("Harlow Solid Italic", Font.BOLD, 40));
+        title.setBounds(250, 15, 300, 60);
+        datetime.setBounds(478, 80, 200, 23);
+        inputPlat.setBounds(30, 132, 150, 23);
+        inputPlat.setFont(new Font("SansSerif", Font.BOLD, 20));
         pilihanKendaraan.setFont(inputFont);
-        searchButton.setBounds(300, 120, 100, 25);
-        pilihanKendaraan.setBounds(190, 120, 100, 25);
-        addButton.setBounds(410, 120, 100, 25);
-        deleteButton.setBounds(520, 120, 100, 25);
+        pilihanKendaraan.setBounds(190, 130, 100, 25);
+        addButton.setBounds(300, 130, 100, 25);
+        deleteButton.setBounds(410, 130, 100, 25);
+        filter.setBounds(85, 170, 100, 25);
+        seachlabel.setBounds(30, 170, 70, 25);
+        filter.setFont(new Font("SansSerif", Font.BOLD, 15));
+
+        //Buttons
+        addButton.setBackground(new Color(35, 149, 154));
+        deleteButton.setBackground(new Color(232, 57, 95));
+        
+
     }
 
     void timedateWidget() {
@@ -62,7 +80,7 @@ public class Parkify extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
-                datetime.setFont(date);
+                datetime.setFont(new Font("Century", Font.PLAIN, 15));
                 datetime.setText(dt.format(now));
             }
         });
@@ -73,7 +91,10 @@ public class Parkify extends JFrame {
         // Table
         dataTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
         dataTable.getTableHeader().setOpaque(false);
-        dataTable.getTableHeader().setBackground(new Color(32, 136, 203));
+        dataTable.getTableHeader().setBackground(new Color(35, 149, 154));
+        dataTable.getTableHeader().setForeground(new Color(255, 255, 255));
+        dataTable.setSelectionBackground(new Color(232, 57, 95));
+        dataTable.setRowHeight(26);
         JScrollPane dataPanel = new JScrollPane(dataTable);
         Object[] columnsName = new Object[5];
         columnsName[0] = "No";
@@ -85,7 +106,15 @@ public class Parkify extends JFrame {
 
         dataTable.setModel(model);
         getContentPane().add(dataPanel);
-        dataPanel.setBounds(30, 180, 590, 300);
+        dataPanel.setBounds(30, 200, 590, 300);
+        
+        TableColumnModel columnModel = dataTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(28);
+        columnModel.getColumn(0).setMaxWidth(28);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        columnModel.getColumn(0).setCellRenderer(centerRenderer);
 
         // Timer to update the table data periodically
         Timer timer = new Timer(1000, new ActionListener() {
@@ -98,8 +127,49 @@ public class Parkify extends JFrame {
         // Load initial data
         updateTable(model);
 
+        //Filter table
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(dataTable.getModel());
+        dataTable.setRowSorter(rowSorter);
+        filter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e)  {
+                    String text = filter.getText();
+
+                    if(text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                    String text = filter.getText(); 
+                    
+                    if(text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                throw new UnsupportedOperationException("next update deh bang hehe");
+            }
+        });
+
         // Auto Capslock input plat
         inputPlat.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char keyChar = e.getKeyChar();
+                if (Character.isLowerCase(keyChar)) {
+                    e.setKeyChar(Character.toUpperCase(keyChar));
+                }
+            }
+        });
+
+        filter.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 char keyChar = e.getKeyChar();
                 if (Character.isLowerCase(keyChar)) {
@@ -138,11 +208,12 @@ public class Parkify extends JFrame {
                 int selectRowIndex = dataTable.getSelectedRow();
 
                 if (selectRowIndex != -1) {
-                    inputPlat.setText(modelcopy.getValueAt(selectRowIndex, 0).toString());
+                    inputPlat.setText(modelcopy.getValueAt(selectRowIndex, 1).toString());
                 }
             }
         });
 
+        //Delete button event
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -221,7 +292,6 @@ public class Parkify extends JFrame {
         Parkify app = new Parkify();
         app.object();
         app.event();
-        app.timedateWidget();
     }
 }
  
