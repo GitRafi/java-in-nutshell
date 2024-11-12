@@ -57,19 +57,23 @@ public class Parkify extends JFrame {
         title.setFont(new Font("Harlow Solid Italic", Font.BOLD, 40));
         title.setBounds(250, 15, 300, 60);
         datetime.setBounds(478, 80, 200, 23);
-        inputPlat.setBounds(30, 132, 150, 23);
+        inputPlat.setBounds(30, 130, 150, 25);
         inputPlat.setFont(new Font("SansSerif", Font.BOLD, 20));
         pilihanKendaraan.setFont(inputFont);
         pilihanKendaraan.setBounds(190, 130, 100, 25);
         addButton.setBounds(300, 130, 100, 25);
         deleteButton.setBounds(410, 130, 100, 25);
         filter.setBounds(85, 170, 100, 25);
-        seachlabel.setBounds(30, 170, 70, 25);
+        seachlabel.setBounds(30, 169, 70, 25);
         filter.setFont(new Font("SansSerif", Font.BOLD, 15));
 
         //Buttons
         addButton.setBackground(new Color(35, 149, 154));
+        addButton.setForeground(new Color(255, 255, 255));
         deleteButton.setBackground(new Color(232, 57, 95));
+        deleteButton.setForeground(new Color(255, 255, 255));
+        filter.setBorder(BorderFactory.createBevelBorder(1, (new Color(35, 149, 154)), (new Color(45, 150, 155))));
+        inputPlat.setBorder(BorderFactory.createBevelBorder(1, (new Color(35, 149, 154)), (new Color(45, 150, 155))));
         
 
     }
