@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 
 public class QRCodeGenerator {
     public static BufferedImage generateQRCodeImage(String text) throws WriterException {
-        int width = 200;  // Width of the QR code
-        int height = 200; // Height of the QR code
+        int width = 115;  // Width of the QR code
+        int height = 115; // Height of the QR code
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
