@@ -3,6 +3,16 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.google.zxing.*;
+import com.google.zxing.common.BitMatrix;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import javax.imageio.ImageIO;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +40,8 @@ public class Parkify extends JFrame {
     JLabel seachlabel = new JLabel("Search:");
 
     Font inputFont = new Font("SansSerif", Font.BOLD, 15);
+    JPanel notaMasuk = new JPanel();
+
 
     Parkify() {
         setTitle("Parkify : Parking Management App");
@@ -41,6 +53,40 @@ public class Parkify extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         timedateWidget();
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(32, 136, 203)));
+    }
+
+      void setupNotaMasukWindow(String plat, String tipeKendaraan, String timeIn) {
+        JFrame notaMasukWindow = new JFrame("Nota Masuk");
+        notaMasukWindow.setSize(500, 700);
+        notaMasukWindow.setLocationRelativeTo(this);
+        notaMasukWindow.setLayout(new GridLayout(3, 2, 10, 10));
+
+        notaMasukWindow.add(new JLabel("Nomer Plat:"));
+        JTextField platField = new JTextField(plat);
+        platField.setEditable(false);
+        notaMasukWindow.add(platField);
+
+        notaMasukWindow.add(new JLabel("Tipe Kendaraan:"));
+        JTextField tipeKendaraanField = new JTextField(tipeKendaraan);
+        tipeKendaraanField.setEditable(false);
+        notaMasukWindow.add(tipeKendaraanField);
+
+        notaMasukWindow.add(new JLabel("Jam Masuk:"));
+        JTextField timeField = new JTextField(timeIn);
+        timeField.setEditable(false);
+        notaMasukWindow.add(timeField);
+
+         try {
+            BufferedImage qrCodeImage =  QRCodeGenerator.generateQRCodeImage(plat);
+            JLabel qrCodeLabel = new JLabel(new ImageIcon(qrCodeImage));
+            notaMasukWindow.add(new JLabel("QR Code:"));
+            notaMasukWindow.add(qrCodeLabel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(notaMasukWindow, "Failed to generate QR code", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        notaMasukWindow.setVisible(true);
     }
 
     void object() {
@@ -58,7 +104,7 @@ public class Parkify extends JFrame {
         title.setBounds(250, 15, 300, 60);
         datetime.setBounds(478, 80, 200, 23);
         inputPlat.setBounds(30, 130, 150, 25);
-        inputPlat.setFont(new Font("SansSerif", Font.BOLD, 20));
+        inputPlat.setFont(new Font("SansSerif", Font.BOLD, 15));
         pilihanKendaraan.setFont(inputFont);
         pilihanKendaraan.setBounds(190, 130, 100, 25);
         addButton.setBounds(300, 130, 100, 25);
@@ -182,6 +228,24 @@ public class Parkify extends JFrame {
             }
         });
 
+          addButton.addActionListener(e -> {
+            try {
+                String plat = inputPlat.getText();
+                String tipeKendaraan = (String) pilihanKendaraan.getSelectedItem();
+                DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                String currentTime = dt.format(LocalDateTime.now());
+
+                // Display `notaMasuk` in a new window with entered details
+                setupNotaMasukWindow(plat, tipeKendaraan, currentTime);
+
+                // Add to database and table (database connection code omitted for brevity)
+
+            } catch (Exception err) {
+                err.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error adding data: " + err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -198,6 +262,9 @@ public class Parkify extends JFrame {
 
                     // Update table after adding a new vehicle
                     updateTable(model);
+
+
+                    
 
                 } catch (SQLException err) {
                     err.printStackTrace();
@@ -298,4 +365,3 @@ public class Parkify extends JFrame {
         app.event();
     }
 }
- 
