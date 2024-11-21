@@ -4,7 +4,7 @@ public class Person {
     protected int age;
 
     public Person() {
-        System.out.println("Inside Constructore:Person");
+        System.out.println("Inside Constructor:Person");
     }
 
     //Second Constructor
