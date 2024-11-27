@@ -7,3 +7,4 @@ class TestingInterface implements ItsInterfaces {
             return (a.equals(b));
     }
 }
+
