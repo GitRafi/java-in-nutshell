@@ -6,11 +6,12 @@ public class DiamondStars {
         System.out.print("Inputkan angka positif: ");
         int n = sc.nextInt();
         String space = " ";
-        int x = n-1;
-        int y = 0;
-        int m = 1;
-        int l = n * 2 - 1;
+        // int y = 0;
+        // int m = 1;
+        // int l = n * 2 - 1;
         assert n > 0 : "Bilangan positif bang -_-";
+        
+        int x = n-1, y = 0, m = 1, l = n * 2 - 1;
         
         for (int i=1;i<=n;i++) {
             System.out.print(space.repeat(x-y));

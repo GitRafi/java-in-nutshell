@@ -21,7 +21,7 @@ public class angkatostring {
         } else if (angka == 7) {
             System.out.println("Angkamu yang kamu pilih adalah Tujuh");
         } else if (angka == 8) {
-            System.out.println("Angkamu yang kamu pilih adalah Delapana");
+            System.out.println("Angkamu yang kamu pilih adalah Delapan");
         } else if (angka == 9) {
             System.out.println("Angkamu yang kamu pilih adalah Sembilan");
         } else if (angka == 10) {

@@ -1,5 +1,4 @@
 import java.awt.*;
-
 public class AWT extends Frame {
     public static void main(String[] args) {
        AWT fwc =  new AWT();
